@@ -33,12 +33,12 @@ function kWts = somTrain(xPats, kWts, kIterations)
 	for iter = 1:kIterations
 		% Determining the current values of the learning rule parameters
 		alpha = maxAlpha*(1+kIterations-iter)/kIterations;
-		radius = ceil(maxRadius*(1+kIterations-iter)/kIterations);
+%		radius = ceil(maxRadius*(1+kIterations-iter)/kIterations);
+		radius = 1;
 		% Ones are added to the sums in oder to not waste the last iteration by having alpha=0 at that time
 
 		% The order in which the patterns are presented is determined by a randomly permuted vector perm
 		perm = randperm(nPats);
-%		perm = [1:nPats];
 
 		for p = 1:nPats
 			% Finding the differences between each Kohonen vector and the current pattern

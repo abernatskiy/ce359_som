@@ -4,8 +4,8 @@
 % March 21 2015
 
 % Setting the parameters
-kTrainingIterations = 50000;
-kGridSide = 10;
+kTrainingIterations = 10000;
+kGridSide = 20;
 noiseAmplitude = 0.1; % determines the maximum deviation of initial Kohonen vectors from centrod of the training set
 
 % Reading the dataset
@@ -31,45 +31,10 @@ initialKohonenWts = arrayfun(@(x) (x>=1) + x*and(x<1, x>0), initialKohonenWts);
 % Training the network
 kohonenWts = somTrain(xPats, initialKohonenWts, kTrainingIterations);
 
-% Plotting
+% Unified distance matrix plot
+somUDMPlot(kohonenWts, xPats, patLabels, strcat('udm', num2str(kGridSide), 'iter', num2str(kTrainingIterations)));
 
-%%% Unified distance matrix plot
-figure()
-udm = somComputeUDM(kohonenWts)
-colormap(flipud(gray));
-%brighten(0.7);
-graph = sanePColor([1:kGridSide], [1:kGridSide], udm);
-set(graph, 'edgecolor', 'none');
-colorbar;
-title('Unified distance matrix for animal data');
-
-% Adding labels to see where do training patterns lie
-[ labelLocations, labelIndices ] = sortrows(somClosestVectors(kohonenWts, xPats));
-line(labelLocations(:,1), labelLocations(:,2), ones(size(labelLocations,1)), 'linestyle', 'none', 'color','r', 'marker', '+', 'markeredgecolor', 'black', 'markerfacecolor', 'k','MarkerSize', 12);
-curpoint = labelLocations(1, :);
-curline = patLabels(labelIndices(1));
-pat = 2;
-% The following construction concatenates the labels of identical vectors to make them readable on the plot
-while 1
-	if pat>size(xPats, 1)
-		text(curpoint(1), curpoint(2), curline, 'HorizontalAlignment', 'center', 'VerticalAlignment', 'top');
-		break;
-	end
-	if isequal(curpoint, labelLocations(pat,:))
-		curline = strcat(curline, ', ', patLabels(labelIndices(pat)));
-	else
-		text(curpoint(1), curpoint(2), curline, 'HorizontalAlignment', 'center', 'VerticalAlignment', 'top');
-		curpoint = labelLocations(pat,:);
-		curline = patLabels(labelIndices(pat));
-	end
-	pat = pat + 1;
-end
-% Adjusting axes to make labels readable
-axis([0, kGridSide+1, 0, kGridSide+1]);
-caxis([0, max(max(udm))*1.2]);
-print(strcat('udm', num2str(kGridSide)), '-dpng')
-
-%%% Debug plots: distances from each training pattern to Kohonen vectors plotted as a heatmap on the grid
+% Debug plots: distances from each training pattern to Kohonen vectors plotted as a heatmap on the grid
 if 0 % Commenting out the debug plot
 for p = 1:size(xPats,1)
 	figure()
