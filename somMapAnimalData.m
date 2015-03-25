@@ -4,8 +4,8 @@
 % March 21 2015
 
 % Setting the parameters
-kTrainingIterations = 1000;
-kGridSide = 20;
+kTrainingIterations = 10000;
+kGridSide = 10;
 noiseAmplitude = 0.1; % determines the maximum deviation of initial Kohonen vectors from centrod of the training set
 
 % Reading the dataset
@@ -22,7 +22,7 @@ xSize = size(xPats, 2);
 
 % Initializing weights with noisified dataset centroid location
 centroid = transpose(mean(xPats, 1));
-initialKohonenWts = centroid(:, ones(1, kGridSide), ones(1, kGridSide+1));
+initialKohonenWts = centroid(:, ones(1, kGridSide), ones(1, kGridSide));
 % Noisifying...
 initialKohonenWts = initialKohonenWts + 2*noiseAmplitude*(rand(size(initialKohonenWts)) - 0.5);
 % ...and cutting the values to not go outside of [0,1]

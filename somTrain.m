@@ -34,20 +34,22 @@ function kWts = somTrain(xPats, kWts, kIterations, patLabels)
 
 		% Determining the current values of the learning rule parameters
 		alpha = maxAlpha*(1+kIterations-iter)/kIterations;
-%		radius = ceil(maxRadius*(1+kIterations-iter)/kIterations);
-		radius = 1;
+		radius = ceil(maxRadius*(1+kIterations-iter)/kIterations);
 		% Ones are added to the sums in oder to not waste the last iteration by having alpha=0 at that time
 
 		% The order in which the patterns are presented is determined by a randomly permuted vector perm
 		perm = randperm(nPats);
 
-		for p = 1:nPats
 		% Plotting the UDM
-%			if or(iter<10, mod(iter, 10) == 0)
-			filename = strcat('udm', num2str(sizeK1), 'x', num2str(sizeK2), '_iter', sprintf('%06d', iter), '_pat', sprintf('%02d', p))
-			disp(['Selected pattern: ', patLabels(perm(p))])
-			somUDMPlot(kWts, xPats, patLabels, filename);
-%			end
+%		if mod(iter, 100) == 1
+%			filename = strcat('udm', num2str(sizeK1), 'x', num2str(sizeK2), '_iter', sprintf('%06d', iter))
+%			somUDMPlot(kWts, xPats, patLabels, filename);
+%		end
+
+		for p = 1:nPats
+			% Plotting the UDM
+%			filename = strcat('udm', num2str(sizeK1), 'x', num2str(sizeK2), '_iter', sprintf('%06d', iter), '_pat', sprintf('%02d', p))
+%			somUDMPlot(kWts, xPats, patLabels, filename);
 
 			% Finding the differences between each Kohonen vector and the current pattern
 			curVec = transpose(xPats(perm(p), :));
@@ -59,7 +61,6 @@ function kWts = somTrain(xPats, kWts, kIterations, patLabels)
 			[ mins1, idxs1 ] = min(net, [], 2);	% could have used ind2sub+sub2ind here, but then it would be more difficult to work with 3D arrays
 			[ netmin, idx2 ] = min(mins1, [], 3);
 			idx1 = idxs1(idx2);
-			disp(['Winner: ', num2str(idx1), ' ', num2str(idx2)])
 			% No additional tiebreaking needed due to the properties of the function min
 
 			% Getting list of neighbors
