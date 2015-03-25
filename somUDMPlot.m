@@ -16,7 +16,7 @@ function somUDMPlot(kohonenWts, xPats, patLabels, filename)
 	% Plotting
 	figure('visible', 'off')
 	colormap(flipud(gray));
-	graph = sanePColor(transpose(udm));
+	graph = sanePColor(transpose(udm)); % fixed implementation of pcolor from matlabcentral
 	set(graph, 'edgecolor', 'none');
 	colorbar;
 	title('Unified distance matrix for animal data');
@@ -50,3 +50,5 @@ function somUDMPlot(kohonenWts, xPats, patLabels, filename)
 
 	close all hidden
 end
+
+

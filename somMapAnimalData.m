@@ -5,7 +5,7 @@
 
 % Setting the parameters
 kTrainingIterations = 10000;
-kGridSide = 10;
+kGridSide = 3;
 noiseAmplitude = 0.1; % determines the maximum deviation of initial Kohonen vectors from centrod of the training set
 
 % Reading the dataset
@@ -32,7 +32,7 @@ initialKohonenWts = arrayfun(@(x) (x>=1) + x*and(x<1, x>0), initialKohonenWts);
 kohonenWts = somTrain(xPats, initialKohonenWts, kTrainingIterations, patLabels);
 
 % Unified distance matrix plot
-%somUDMPlot(kohonenWts, xPats, patLabels, strcat('udm', num2str(kGridSide), 'iter', num2str(kTrainingIterations)));
+somUDMPlot(kohonenWts, xPats, patLabels, strcat('udm', num2str(kGridSide), 'x', num2str(kGridSide), '_iter', num2str(kTrainingIterations)));
 
 % Debug plots: distances from each training pattern to Kohonen vectors plotted as a heatmap on the grid
 if 0 % Commenting out the debug plot
@@ -50,4 +50,5 @@ for p = 1:size(xPats,1)
 	title(strcat('Pattern ', num2str(p), ' distance'));
 end
 end % End of comment
+
 
