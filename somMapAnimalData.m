@@ -4,7 +4,7 @@
 % March 21 2015
 
 % Setting the parameters
-kTrainingIterations = 10000;
+kTrainingIterations = 1000;
 kGridSide = 20;
 noiseAmplitude = 0.1; % determines the maximum deviation of initial Kohonen vectors from centrod of the training set
 
@@ -22,17 +22,17 @@ xSize = size(xPats, 2);
 
 % Initializing weights with noisified dataset centroid location
 centroid = transpose(mean(xPats, 1));
-initialKohonenWts = centroid(:, ones(1, kGridSide), ones(1, kGridSide));
+initialKohonenWts = centroid(:, ones(1, kGridSide), ones(1, kGridSide+1));
 % Noisifying...
 initialKohonenWts = initialKohonenWts + 2*noiseAmplitude*(rand(size(initialKohonenWts)) - 0.5);
 % ...and cutting the values to not go outside of [0,1]
 initialKohonenWts = arrayfun(@(x) (x>=1) + x*and(x<1, x>0), initialKohonenWts);
 
 % Training the network
-kohonenWts = somTrain(xPats, initialKohonenWts, kTrainingIterations);
+kohonenWts = somTrain(xPats, initialKohonenWts, kTrainingIterations, patLabels);
 
 % Unified distance matrix plot
-somUDMPlot(kohonenWts, xPats, patLabels, strcat('udm', num2str(kGridSide), 'iter', num2str(kTrainingIterations)));
+%somUDMPlot(kohonenWts, xPats, patLabels, strcat('udm', num2str(kGridSide), 'iter', num2str(kTrainingIterations)));
 
 % Debug plots: distances from each training pattern to Kohonen vectors plotted as a heatmap on the grid
 if 0 % Commenting out the debug plot

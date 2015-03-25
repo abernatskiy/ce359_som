@@ -3,7 +3,7 @@
 % By Anton Bernatskiy, abernats@uvm.edu
 % March 22 2015
 
-function kWts = somTrain(xPats, kWts, kIterations)
+function kWts = somTrain(xPats, kWts, kIterations, patLabels)
 	% Finding out the number of input nodes and Kohonen grid dimensions
 	sizeX = size(xPats, 2);
 	if sizeX ~= size(kWts, 1)
@@ -31,6 +31,7 @@ function kWts = somTrain(xPats, kWts, kIterations)
 
 	% Training the Kohonen layer:
 	for iter = 1:kIterations
+
 		% Determining the current values of the learning rule parameters
 		alpha = maxAlpha*(1+kIterations-iter)/kIterations;
 %		radius = ceil(maxRadius*(1+kIterations-iter)/kIterations);
@@ -41,6 +42,13 @@ function kWts = somTrain(xPats, kWts, kIterations)
 		perm = randperm(nPats);
 
 		for p = 1:nPats
+		% Plotting the UDM
+%			if or(iter<10, mod(iter, 10) == 0)
+			filename = strcat('udm', num2str(sizeK1), 'x', num2str(sizeK2), '_iter', sprintf('%06d', iter), '_pat', sprintf('%02d', p))
+			disp(['Selected pattern: ', patLabels(perm(p))])
+			somUDMPlot(kWts, xPats, patLabels, filename);
+%			end
+
 			% Finding the differences between each Kohonen vector and the current pattern
 			curVec = transpose(xPats(perm(p), :));
 			diffs = kWts - curVec(:, ones(1, sizeK1), ones(1, sizeK2));
@@ -51,6 +59,7 @@ function kWts = somTrain(xPats, kWts, kIterations)
 			[ mins1, idxs1 ] = min(net, [], 2);	% could have used ind2sub+sub2ind here, but then it would be more difficult to work with 3D arrays
 			[ netmin, idx2 ] = min(mins1, [], 3);
 			idx1 = idxs1(idx2);
+			disp(['Winner: ', num2str(idx1), ' ', num2str(idx2)])
 			% No additional tiebreaking needed due to the properties of the function min
 
 			% Getting list of neighbors

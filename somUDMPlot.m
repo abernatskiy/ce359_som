@@ -7,16 +7,16 @@ function somUDMPlot(kohonenWts, xPats, patLabels, filename)
 	% Unified distance matrix plot
 
 	% Determining grid sizes
-	sizeK1 = size(kohonenWts, 2)
-	sizeK2 = size(kohonenWts, 3)
+	sizeK1 = size(kohonenWts, 2);
+	sizeK2 = size(kohonenWts, 3);
 
 	% Computing the UDM
-	udm = somComputeUDM(kohonenWts)
+	udm = somComputeUDM(kohonenWts);
 
 	% Plotting
 	figure('visible', 'off')
 	colormap(flipud(gray));
-	graph = sanePColor([1:sizeK1], [1:sizeK2], udm);
+	graph = sanePColor(transpose(udm));
 	set(graph, 'edgecolor', 'none');
 	colorbar;
 	title('Unified distance matrix for animal data');
