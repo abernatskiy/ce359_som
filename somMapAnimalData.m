@@ -5,7 +5,7 @@
 
 % Setting the parameters
 kTrainingIterations = 10000;
-kGridSide = 3;
+kGridSide = 10;
 noiseAmplitude = 0.1; % determines the maximum deviation of initial Kohonen vectors from centrod of the training set
 
 % Reading the dataset
